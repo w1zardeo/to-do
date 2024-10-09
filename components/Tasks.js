@@ -23,7 +23,7 @@ const Tasks = ({ tasks, toggleTask, deleteTask, updateTaskText }) => {
     if (text === '') {
       deleteTask(index, section);
     } else {
-      updateTaskText(index, section, text); // Ensure the updateTaskText is called with new text
+      updateTaskText(index, section, text);
     }
   };
 
@@ -51,9 +51,9 @@ const Tasks = ({ tasks, toggleTask, deleteTask, updateTaskText }) => {
                       value={item.text}
                       onChangeText={(text) => handleTextChange(text, index, 'incomplete')}
                       style={styles.taskText}
-                      multiline={true} // Додано, щоб текст переходив на новий рядок
-                      numberOfLines={1} // Додано для контролю кількості рядків
-                      maxLength={100} // Додано, щоб обмежити максимальну довжину введення
+                      multiline={true}
+                      numberOfLines={1}
+                      maxLength={100}
                     />
                     <Text style={styles.categoryText}>
                       {getCategoryEmoji(item.category)} {item.category}
@@ -91,13 +91,11 @@ const Tasks = ({ tasks, toggleTask, deleteTask, updateTaskText }) => {
                       value={item.text}
                       onChangeText={(text) => handleTextChange(text, index, 'complete')}
                       style={[styles.taskText, styles.completedTaskText]}
-                      multiline={true} // Додано, щоб текст переходив на новий рядок
-                      numberOfLines={1} // Додано для контролю кількості рядків
-                      maxLength={100} // Додано, щоб обмежити максимальну довжину введення
+                      // multiline={true}
+                      numberOfLines={1}
+                      maxLength={100}
                     />
-                    <Text style={styles.categoryText}>
-                      {getCategoryEmoji(item.category)} {item.category}
-                    </Text>
+                    {/* Не відображаємо категорію для виконаних завдань */}
                   </View>
                 }
               />
@@ -156,11 +154,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     width: '100%',
-    flexWrap: 'wrap', // Додано для автоматичного переходу тексту
-  },
-  checkboxLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexWrap: 'wrap',
   },
   taskText: {
     color: '#DADADA',
@@ -173,6 +167,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     flex: 1,
+    paddingBottom: 18,
   },
   categoryText: {
     color: '#575767',

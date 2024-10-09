@@ -1,36 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, Dimensions } from 'react-native';
+import { View, TextInput, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const { height } = Dimensions.get('window');
-
-const paddingPercentageHeight = (76 / height) * 100;
-
-const Header = ({ incompleteCount, completeCount }) => {
-  // State to hold the input text
+const Header = ({ incompleteCount, completeCount, navigation, selectedDate }) => {
   const [inputText, setInputText] = useState('');
 
-  // Function to format the date
-  const formatDate = () => {
-    const date = new Date();
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-  };
-
-  // Update inputText with the formatted date on component mount
   useEffect(() => {
-    setInputText(formatDate());
-  }, []);
+    // Використовуємо вибрану дату
+    if (selectedDate) {
+      setInputText(selectedDate);
+    }
+  }, [selectedDate]);
 
   return (
     <View style={styles.header}>
-      <TextInput
-        style={[styles.title, { paddingTop: height * (paddingPercentageHeight / 100) }]}
-        value={inputText} // Controlled input
-        onChangeText={setInputText} // Update state on text change
-        placeholder="Enter date" // Placeholder text
-        placeholderTextColor="#DADADA" // Color for placeholder
-        underlineColorAndroid="transparent" // Remove underline on Android
-      />
+      <View style={styles.headerRow}>
+        <TextInput
+          style={styles.title}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Enter date"
+          placeholderTextColor="#DADADA"
+          underlineColorAndroid="transparent"
+        />
+        <TouchableOpacity onPress={() => navigation.navigate('Calendar')}>
+          <Text style={styles.calendarButton}>Calendar</Text>
+        </TouchableOpacity>
+      </View>
       <Text style={styles.subtitle}>{incompleteCount} incomplete, {completeCount} completed</Text>
       <View style={styles.line} />
     </View>
@@ -43,13 +38,22 @@ const styles = StyleSheet.create({
     padding: 0,
     marginTop: 0,
   },
+  headerRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 18,
+  },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
-    fontFamily: 'inter', // Use the custom loaded font
-    marginTop: 0,
-    marginLeft: 18,
+    fontFamily: 'inter',
+    marginTop: 76,
+  },
+  calendarButton: {
+    color: '#007BFF',
+    fontSize: 16,
   },
   subtitle: {
     fontSize: 14,
